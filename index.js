@@ -1,7 +1,7 @@
 //Importamos modulos
 const express = require('express');
 const cors = require('cors');
-const { agregarPost, obtenerPosts} = require("./consultas");
+const { agregarPost, obtenerPosts, agregarLike, eliminarPost } = require("./consultas");
 
 //Instanciamos express
 const app = express();
@@ -20,7 +20,19 @@ app.get("/posts", async (req, res) => {
 })
 
 app.post("/posts", async (req, res) => {
-    const { titulo, url, descripcion } = req.body
-    await agregarPost(titulo, url, descripcion)
+    const { titulo, img, descripcion } = req.body
+    await agregarPost(titulo, img, descripcion)
     res.send("Se agregó un nuevo post")
+})
+
+app.put("/posts/like/:id", async (req, res) => {
+    const { id } = req.params;
+    await agregarLike(id)
+    res.send("Se agregó un like")
+})
+
+app.delete("/posts/:id", async (req, res) => {
+    const { id } = req.params;
+    await eliminarPost(id)
+    res.send("Se eliminó el post correctamente")
 })
