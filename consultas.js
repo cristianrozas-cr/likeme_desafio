@@ -10,27 +10,42 @@ const pool = new Pool({
 
 
 const agregarPost = async (titulo, img, descripcion) => {
-    const consulta = "INSERT INTO posts values (DEFAULT, $1, $2, $3, 0)";
-    const values = [titulo, img, descripcion];
-    await pool.query(consulta, values)  //objeto result
-    // console.log(result)
+    try{
+        const consulta = "INSERT INTO posts values (DEFAULT, $1, $2, $3, 0)";
+        const values = [titulo, img, descripcion];
+        await pool.query(consulta, values)  //objeto result
+    } catch (error){
+        res.status(500).send(error)
+    }
 }
 
 const obtenerPosts = async () => {
-    const { rows } = await pool.query("SELECT * FROM posts");
-    return rows;
+    try{
+        const { rows } = await pool.query("SELECT * FROM posts");
+        return rows;
+    } catch (error) {
+        res.status(500).send(error)
+    }
 }
 
 const agregarLike = async (id) => {
-    const consulta = "UPDATE posts SET likes = likes + 1 WHERE id = $1"
-    const values = [id]
-    await pool.query(consulta, values)
+    try{
+        const consulta = "UPDATE posts SET likes = likes + 1 WHERE id = $1"
+        const values = [id]
+        await pool.query(consulta, values)
+    } catch (error){
+        res.status(500).send(error)
+    }
 }
 
 const eliminarPost = async (id) => {
-    const consulta = "DELETE FROM posts WHERE id = $1"
-    const values = [id]
-    await pool.query(consulta, values)
+    try{
+        const consulta = "DELETE FROM posts WHERE id = $1"
+        const values = [id]
+        await pool.query(consulta, values)
+    } catch (error){
+        res.status(500).send(error)
+    }
 }
 
 module.exports = { agregarPost, obtenerPosts, agregarLike, eliminarPost };
